@@ -1,0 +1,69 @@
+<div class="game">
+  <div class="game-box">
+    <div class="gametap-title">敬请期待</div>
+    <img src="/source/background/img/psc (1).webp" />
+  </div>
+</div>
+
+<div class="game">
+  <div class="game-box">
+    <div class="gametap-title">心酱的塔防棋牌</div>
+    <img src="/source/background/img/psc (2).webp" />
+  </div>
+</div>
+
+<div class="game">
+  <div class="game-box">
+    <div class="gametap-title">德州</div>
+    <img src="/source/background/img/psc (3).webp" />
+  </div>
+</div>
+
+<div class="game">
+  <div class="game-box" id="p21">
+    <div class="gametap-title">二十一点</div>
+    <img src="/source/background/img/psc (4).webp" />
+  </div>
+</div>
+
+<div class="game">
+  <div class="game-box">
+    <div class="gametap-title">富饶之城</div>
+    <img src="/source/background/img/psc (5).webp" />
+  </div>
+</div>
+
+<div class="game">
+  <div class="game-box">
+    <div class="gametap-title">梅衣堂堀的回合卡牌</div>
+    <img src="/source/background/img/psc (6).webp" />
+  </div>
+</div>
+
+<div class="game">
+  <div class="game-box">
+    <div class="gametap-title">敬请期待</div>
+    <img src="/source/background/img/psc (7).webp" />
+  </div>
+</div>
+
+<script>
+  //$.getJSON(`/game/${room.type}/${room.type}.json`, (data) => {})
+  gametapAnimate(Math.floor($('.game').length / 2) + 1);
+  $('.game').each((i, item) => $(item).on('click', () => gametapAnimate(i + 1)));
+  $('.game').dblclick((e) => roomListShow(e.target.id));
+
+  function gametapAnimate(p) {
+    let l = $('.game').length;
+    $('.game').css('--items', l);
+    let now = Math.floor(Math.max(0, Math.min(p, l)) / l * (l - 1));
+    $('.game').each((index, g) => $(g).css({ '--zIndex': ([...$('.game')].map((_, i) => (now === i) ? l : l - Math.abs(now - i)))[index], '--active': (index - now) / l }));
+  }
+  function gametapShow() {
+    if ($.cookie('info') == undefined) usertapShow('gametap');
+    else {
+      show('gametap');
+      ['roomList'].forEach((id) => (window.addons.indexOf(id) == -1) ? addon(id) : 0);
+    }
+  }
+</script>

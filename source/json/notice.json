@@ -1,0 +1,30 @@
+{
+  "account": {
+    "verify0": "你邮箱格式错了,而且昵称长度不对",
+    "verify1": "你昵称长度不对",
+    "verify2": "你邮箱格式错了",
+    "reg0": "你密码长度不对,而且两次密码不一样",
+    "reg1": "你两次密码不一样",
+    "reg2": "你密码长度不对",
+    "log0": "你邮箱格式错了,而且密码长度不对",
+    "log1": "你密码长度不对",
+    "log2": "你邮箱格式错了",
+    "prspwd0": "你邮箱格式错了",
+    "regSuccess": "账号注册成功",
+    "emailExist": "该邮箱账号已存在",
+    "logSuccess": "登录成功",
+    "logFail": "登录失败",
+    "accountUnexist": "不存在的邮箱账号",
+    "verifySuccess": "验证码已发送至邮箱，有效期十分钟，请勿刷新此页面",
+    "codeError": "验证码错误",
+    "codeOverdue": "验证码已过期",
+    "invalidCookie": "登录信息无效或过期",
+    "nameExist": "用户名已存在",
+    "prspwdSuccess": "验证码已发送至邮箱，有效期十分钟，请勿刷新此页面",
+    "rspwdSuccess": "密码修改成功，请重新登录"
+  },
+  "feature": {
+    "imgExceed": "图片大小不能超过5Mb",
+    "imgInvalid": "无效的图片格式"
+  }
+}

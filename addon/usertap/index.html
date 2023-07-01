@@ -1,0 +1,222 @@
+<div class="container__form container--signup">
+  <form class="form" id="form2">
+    <h2 class="form__title">登录</h2>
+    <input id="logmail" type="email" placeholder="快把邮箱端上来罢" class="usertap-input" />
+    <input id="logpwd" type="password" placeholder="密码放这里" class="usertap-input" />
+    <a onclick="account.reset()" class="link">你在寻找密码?</a>
+    <button id="log-button" class="btn" onclick="account.log()">登录</button>
+    <svg class="log-loader" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+      <path
+        d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 376c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32zm0-128c-53.02 0-96 42.98-96 96s42.98 96 96 96c-106.04 0-192-85.96-192-192S141.96 64 248 64c53.02 0 96 42.98 96 96s-42.98 96-96 96zm0-128c-17.67 0-32 14.33-32 32s14.33 32 32 32 32-14.33 32-32-14.33-32-32-32z">
+      </path>
+    </svg>
+  </form>
+</div>
+<div class="container__form container--signin">
+  <form class="form" id="form1">
+    <h2 class="form__title">注册</h2>
+    <input id="regmail" type="email" placeholder="填上你的邮箱" class="usertap-input" />
+    <input id="username" type="text" placeholder="2 =< 君の昵称 >= 11" class="usertap-input" />
+    <input id="code" type="text" placeholder="填写验证码" class="usertap-input" />
+    <input id="regpwd" type="password" placeholder="6 < 现编一个密码 > 16" class="usertap-input" />
+    <input id="regrepwd" type="password" placeholder="6 < 重复你的密码 > 16" class="usertap-input" />
+    <a onclick="alert('暂未开放')" class="link" id="contact">账号关联</a>
+    <button id="reg-button" class="btn" onclick="account.verify()">验证</button>
+    <svg class="reg-loader" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+      <path
+        d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 376c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32zm0-128c-53.02 0-96 42.98-96 96s42.98 96 96 96c-106.04 0-192-85.96-192-192S141.96 64 248 64c53.02 0 96 42.98 96 96s-42.98 96-96 96zm0-128c-17.67 0-32 14.33-32 32s14.33 32 32 32 32-14.33 32-32-14.33-32-32-32z">
+      </path>
+    </svg>
+  </form>
+</div>
+<div class="container__overlay">
+  <div class="overlay">
+    <div class="overlay__panel overlay--left">
+      <button class="btn" id="signIn">注册</button>
+    </div>
+    <div class="overlay__panel overlay--right">
+      <button class="btn" id="signUp">登录</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('.usertap').addClass('container right-panel-active');
+  $('#signIn').on('click', () => $('.container').removeClass('right-panel-active'));
+  $('#signUp').on('click', () => $('.container').addClass('right-panel-active'));
+  $('#form1').on('submit', (e) => e.preventDefault());
+  $('#form2').on('submit', (e) => e.preventDefault());
+
+  monitor['user'] = (info) => {
+    formLoaded();
+    msg({
+      title: '提示',
+      detail: window.message.account[info]
+    });
+    const res = {
+      regSuccess: () => {
+        $('#signUp').click();
+        $('#regpas').val(null);
+        $('#regrepas').val(null);
+      },
+      logSuccess: () => setTimeout(_ => location.reload(), 1000),
+      verifySuccess: () => {
+        $('#regmail').val(null);
+        $('#username').val(null);
+        $('#regmail').fadeOut('250');
+        $('#username').fadeOut('250');
+        $('#contact').fadeOut('250', () => {
+          $('#regpwd').fadeIn('250');
+          $('#regrepwd').fadeIn('250');
+          $('#code').fadeIn('250');
+          $('#reg-button').text('确定');
+          $('#reg-button').attr('onclick', "account.reg()");
+        });
+      },
+      codeOverdue: () => {
+        $('#regmail').val(null);
+        $('#username').val(null);
+        $('#regpwd').fadeOut('250');
+        $('#regrepwd').fadeOut('250');
+        $('#code').fadeOut('250', () => {
+          $('#regmail').fadeIn('250');
+          $('#username').fadeIn('250');
+          $('#contact').fadeIn('250');
+          $('#reg-button').text('验证');
+          $('#reg-button').attr('onclick', "account.verify()");
+        });
+      },
+      prspwdSuccess: () => table({
+        head: '修改密码',
+        body: [
+          {
+            type: 'input',
+            id: 'rs-code',
+            display: '验证码'
+          },
+          {
+            type: 'input',
+            id: 'rspwd',
+            display: '你的新密码',
+            pwd: !0
+          },
+          {
+            type: 'input',
+            id: 'rerspwd',
+            display: '重复新密码',
+            pwd: !0
+          },
+          {
+            type: 'btn',
+            display: '确定',
+            event: 'account.rspwd()'
+          }
+        ]
+      }),
+      rspwdSuccess: () => {
+        $('.table').fadeOut(250);
+        $.removeCookie('info');
+        window.info = undefined;
+        usertapShow('accounttap', 250);
+      }
+    }
+    info in res && res[info]();
+  }
+  monitor['updataCookie'] = (cookie) => $.cookie('info', cookie, { expires: 90 });
+  monitor['cookie'] = () => $.removeCookie('info');
+
+  const account = {
+    verify: () => {
+      if (testfor.verify($('#regmail').val(), $('#username').val())) {
+        formLoaded('reg');
+        emit('account.verify', {
+          mail: $('#regmail').val(),
+          name: $('#username').val()
+        });
+      }
+    },
+    log: () => {
+      if (testfor.log($('#logmail').val(), $('#logpwd').val())) {
+        formLoaded('log');
+        emit('account.log', {
+          mail: $('#logmail').val(),
+          password: $('#logpwd').val()
+        });
+      }
+    },
+    reg: () => {
+      if (testfor.reg($('#regpwd').val(), $('#regrepwd').val())) {
+        formLoaded('reg');
+        emit('account.reg', {
+          code: $('#code').val(),
+          password: $('#regpwd').val()
+        });
+      }
+    },
+    logout: () => {
+      $.removeCookie('info');
+      window.info = undefined;
+      $('#logmail').val(null);
+      $('#logpwd').val(null);
+      //show('option');
+      location.reload();
+    },
+    reset: () => table({
+      head: '修改密码',
+      body: [
+        {
+          type: 'input',
+          id: 'prspwd',
+          display: '这里填你的邮箱',
+        },
+        {
+          type: 'btn',
+          display: '验证',
+          event: 'account.prspwd()'
+        }
+      ]
+    }),
+    prspwd: () => {
+      if (testfor.prspwd($('#prspwd').val())) {
+        $('.table-body>a').css('display', 'none');
+        $('.table-body>div').css('display', 'block');
+        emit('account.prspwd', {
+          mail: $('#prspwd').val()
+        });
+      }
+    },
+    rspwd: () => {
+      if (testfor.reg($('#rspwd').val(), $('#rerspwd').val())) {
+        $('.table-body>a').css('display', 'none');
+        $('.table-body>div').css('display', 'block');
+        emit('account.rspwd', {
+          code: $('#rs-code').val(),
+          password: $('#rspwd').val()
+        });
+      }
+    }
+  }
+
+  function formLoaded(type) {
+    if (type == 'log') {
+      $('.log-loader').css('display', 'block');
+      $('#log-button').css('display', 'none');
+    }
+    else if (type == 'reg') {
+      $('.reg-loader').css('display', 'block');
+      $('#reg-button').css('display', 'none');
+    }
+    else {
+      setTimeout(() => {
+        $('.log-loader').css('display', 'none');
+        $('#log-button').css('display', 'block');
+        $('.reg-loader').css('display', 'none');
+        $('#reg-button').css('display', 'block');
+      }, 500);
+    }
+  }
+  function usertapShow(to, delay) {
+    show('usertap', delay);
+    $('body').attr('target', to);
+  }
+</script>

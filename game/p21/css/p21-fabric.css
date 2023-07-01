@@ -1,0 +1,362 @@
+.p21-0 {
+  background: url('/game/p21/card/0.webp');
+}
+
+.p21-1 {
+  background: url('/game/p21/card/1.webp')
+}
+
+.p21-1:after {
+  content: '1';
+  margin: 5px;
+}
+
+.p21-2 {
+  background: url('/game/p21/card/2.webp')
+}
+
+.p21-2:after {
+  content: '2';
+  margin: 5px;
+}
+
+.p21-3 {
+  background: url('/game/p21/card/3.webp')
+}
+
+.p21-3:after {
+  content: '3';
+  margin: 5px;
+}
+
+.p21-4 {
+  background: url('/game/p21/card/4.webp')
+}
+
+.p21-4:after {
+  content: '4';
+  margin: 5px;
+}
+
+.p21-5 {
+  background: url('/game/p21/card/5.webp')
+}
+
+.p21-5:after {
+  content: '5';
+  margin: 5px;
+}
+
+.p21-6 {
+  background: url('/game/p21/card/6.webp')
+}
+
+.p21-6:after {
+  content: '6';
+  margin: 5px;
+}
+
+.p21-7 {
+  background: url('/game/p21/card/7.webp')
+}
+
+.p21-7:after {
+  content: '7';
+  margin: 5px;
+}
+
+.p21-8 {
+  background: url('/game/p21/card/8.webp')
+}
+
+.p21-8:after {
+  content: '8';
+  margin: 5px;
+}
+
+.p21-9 {
+  background: url('/game/p21/card/9.webp')
+}
+
+.p21-9:after {
+  content: '9';
+  margin: 5px;
+}
+
+.p21-10 {
+  background: url('/game/p21/card/10.webp')
+}
+
+.p21-10:after {
+  content: '10';
+  margin: 5px;
+}
+
+.p21-11 {
+  background: url('/game/p21/card/11.webp')
+}
+
+.p21-11:after {
+  content: '11';
+  margin: 5px;
+}
+
+.p21-cover {
+  background: url('/game/p21/excard/0.svg')
+}
+
+.p21-plus {
+  background: url('/game/p21/excard/plus.svg');
+}
+
+.p21-items>.p21-plus::before,
+.p21-output>.p21-plus::before {
+  content: '该符卡在场上时，赌注加一。2/3的概率抽一张符卡。'
+}
+
+.p21-items>.p21-plus::after,
+.p21-output>.p21-plus::after {
+  content: '1+'
+}
+
+.p21-break {
+  background: url('/game/p21/excard/break.svg')
+}
+
+.p21-items>.p21-break::before,
+.p21-output>.p21-break::before {
+  content: '破坏对手场上的全部符卡。'
+}
+
+.p21-items>.p21-break::after,
+.p21-output>.p21-break::after {
+  content: '破坏'
+}
+
+.p21-protect {
+  background: url('/game/p21/excard/protect.svg')
+}
+
+.p21-items>.p21-protect::before,
+.p21-output>.p21-protect::before {
+  content: '该符卡在场上时，若本回合失败则扣除的赌注减一。'
+}
+
+.p21-items>.p21-protect::after,
+.p21-output>.p21-protect::after {
+  content: '盾牌'
+}
+
+.p21-delete {
+  background: url('/game/p21/excard/delete.svg')
+}
+
+.p21-items>.p21-delete::before,
+.p21-output>.p21-delete::before {
+  content: '撤回对手最后抽到的牌。底牌无效。'
+}
+
+.p21-items>.p21-delete::after,
+.p21-output>.p21-delete::after {
+  content: '撤除'
+}
+
+.p21-back {
+  background: url('/game/p21/excard/back.svg')
+}
+
+.p21-items>.p21-back::before,
+.p21-output>.p21-back::before {
+  content: '撤回自己最后抽到的牌。底牌无效。'
+}
+
+.p21-items>.p21-back::after,
+.p21-output>.p21-back::after {
+  content: '撤回'
+}
+
+.p21-place {
+  background: url('/game/p21/excard/place.svg')
+}
+
+.p21-items>.p21-place::before,
+.p21-output>.p21-place::before {
+  content: '交换双方最后抽到的牌。底牌无效。'
+}
+
+.p21-items>.p21-place::after,
+.p21-output>.p21-place::after {
+  content: '交换'
+}
+
+.p21-input {
+  background: url('/game/p21/excard/input.svg')
+}
+
+.p21-rule {
+  background: url('/game/p21/excard/rule.svg')
+}
+
+.p21-items>.p21-rule::before,
+.p21-output>.p21-rule::before {
+  content: '该符卡在场上时，规则中的点数最大值变为24点。'
+}
+
+.p21-items>.p21-rule::after,
+.p21-output>.p21-rule::after {
+  content: '24点'
+}
+
+.p21-items>[num="1"]::before,
+.p21-output>[num="1"]::before {
+  content: '从牌堆中抽出1。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="1"]::after,
+.p21-output>[num="1"]::after {
+  content: '1牌'
+}
+
+.p21-items>[num="2"]::before,
+.p21-output>[num="2"]::before {
+  content: '从牌堆中抽出2。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="2"]::after,
+.p21-output>[num="2"]::after {
+  content: '2牌'
+}
+
+.p21-items>[num="3"]::before,
+.p21-output>[num="3"]::before {
+  content: '从牌堆中抽出3。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="3"]::after,
+.p21-output>[num="3"]::after {
+  content: '3牌'
+}
+
+.p21-items>[num="4"]::before,
+.p21-output>[num="4"]::before {
+  content: '从牌堆中抽出4。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="4"]::after,
+.p21-output>[num="4"]::after {
+  content: '4牌'
+}
+
+.p21-items>[num="5"]::before,
+.p21-output>[num="5"]::before {
+  content: '从牌堆中抽出5。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="5"]::after,
+.p21-output>[num="5"]::after {
+  content: '5牌'
+}
+
+.p21-items>[num="6"]::before,
+.p21-output>[num="6"]::before {
+  content: '从牌堆中抽出6。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="6"]::after,
+.p21-output>[num="6"]::after {
+  content: '6牌'
+}
+
+.p21-items>[num="7"]::before,
+.p21-output>[num="7"]::before {
+  content: '从牌堆中抽出7。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="7"]::after,
+.p21-output>[num="7"]::after {
+  content: '7牌'
+}
+
+.p21-items>[num="8"]::before,
+.p21-output>[num="8"]::before {
+  content: '从牌堆中抽出8。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="8"]::after,
+.p21-output>[num="8"]::after {
+  content: '8牌'
+}
+
+.p21-items>[num="9"]::before,
+.p21-output>[num="9"]::before {
+  content: '从牌堆中抽出9。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="9"]::after,
+.p21-output>[num="9"]::after {
+  content: '9牌'
+}
+
+.p21-items>[num="10"]::before,
+.p21-output>[num="10"]::before {
+  content: '从牌堆中抽出10。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="10"]::after,
+.p21-output>[num="10"]::after {
+  content: '10牌'
+}
+
+.p21-items>[num="11"]::before,
+.p21-output>[num="11"]::before {
+  content: '从牌堆中抽出11。若不在牌堆中则无事发生。'
+}
+
+.p21-items>[num="11"]::after,
+.p21-output>[num="11"]::after {
+  content: '11牌'
+}
+
+#p21-ops>a[type="yes"]::before {
+  content: '祈符';
+}
+
+#p21-ops>a[type="no"]::before {
+  content: '推让';
+}
+
+#p21-ops>a[type="wait"]::before {
+  content: '幻想中...';
+}
+
+#p21-ops>a[type="result"]::before {
+  content: '揭晓运势...';
+}
+
+#p21-ops>a[type="draw"]::before {
+  content: '平分秋色';
+}
+
+#p21-ops>a[type="win"]::before {
+  content: '吉';
+}
+
+#p21-ops>a[type="fail"]::before {
+  content: '凶';
+}
+
+.p21-winner {
+  background: url('/game/p21/result/winner.webp');
+}
+
+.p21-loser {
+  background: url('/game/p21/result/loser.webp');
+}
+
+.p21-winner::after {
+  content: '福缘满至';
+}
+
+.p21-loser::after {
+  content: '喜临他日';
+}

@@ -1,0 +1,101 @@
+.room-mate-list {
+  opacity: 0;
+  transition: 0.4s;
+  margin: 20px 20px 0px 20px;
+  width: 510px;
+  height: 405px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  position: absolute;
+}
+
+.room-mate-list l {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-bottom: 2px solid #ab635a;
+  transition: 0.3s;
+}
+
+.room-mate-list l:first-child {
+  position: sticky;
+  top: 0;
+}
+
+.room-mate-list img {
+  height: 32px;
+  width: 32px;
+}
+
+.room-mate-list a,
+.room-mate-list n {
+  text-align: center;
+  font-size: 18px;
+  color: #790e00;
+  border-right: 2px solid #a4a4a4;
+}
+
+.room-mate-list n {
+  width: 30px;
+  height: 18px;
+  margin: 7px 0px;
+}
+
+.room-mate-list a:nth-child(2) {
+  width: 180px;
+}
+
+.room-mate-list a:nth-child(3) {
+  width: 80px;
+}
+
+.room-mate-list a:nth-child(4) {
+  width: 100px;
+}
+
+.room-mate-list a:nth-child(5) {
+  width: 60px;
+  border-right: none;
+}
+
+[rml-status="host"]::after {
+  content: '宴主';
+}
+
+[rml-status="ready"]::after {
+  content: '就绪';
+}
+
+[rml-status="idle"]::after {
+  content: '闲置';
+}
+
+.room-mate-list::-webkit-scrollbar {
+  display: none;
+}
+
+.room-mate-list e {
+  display: flex;
+  justify-content: center;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 18px;
+  padding: 7px;
+  width: 444px;
+  color: #790e00;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.room-mate-list e::after {
+  content: '返回缩略显示';
+}
+
+.room-mate-list l:hover,
+.room-mate-list e:hover {
+  background-color: white;
+}

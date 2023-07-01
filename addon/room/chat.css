@@ -1,0 +1,168 @@
+.room-chat {
+  width: 58px;
+  height: 560px;
+  border-radius: 12px;
+  margin-right: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+#room-chat:checked~.room-chat {
+  width: 308px;
+}
+
+#room-chat:checked~.room-chat>.room-msg,
+#room-chat:checked~.room-chat>.room-chat-switch {
+  width: 300px;
+}
+
+.room-chat,
+.room-msg,
+.room-chat-switch {
+  transition: 0.4s;
+}
+
+.room-msg {
+  width: 50px;
+  height: 492px;
+  border-radius: 12px 12px 0px 0px;
+  border: 4px solid #ad4234;
+  border-bottom: 0;
+  padding: 10px 0px;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+.room-msg:hover {
+  overflow-y: auto;
+}
+
+.room-msg::-webkit-scrollbar {
+  width: 8px;
+}
+
+.room-msg::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+.room-msg::-webkit-scrollbar-thumb {
+  background-color: rgb(215 117 117);
+  border-radius: 100px;
+}
+
+.room-msg>div {
+  width: 280px;
+  margin: 0px 10px;
+  display: flex;
+}
+
+.room-msg>div>img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.room-msg>div p {
+  color: #ad4234;
+  font-size: 18px;
+  margin: 0px 10px;
+  text-shadow: 0 0 2px white,
+    0 0 2px white,
+    0 0 2px white,
+    0 0 2px white,
+    0 0 2px white,
+    0 0 2px white,
+    0 0 2px white;
+}
+
+.room-msg span {
+  font-size: 18px;
+  color: #ad4234;
+  background-color: #fff;
+  padding: 7px;
+  display: inline-block;
+  border-radius: 7px;
+  margin: 5px 0 10px 10px;
+  position: relative;
+  word-break: break-all;
+}
+
+.room-msg span::after {
+  content: '';
+  border: 6px solid transparent;
+  border-right: 6px solid #fff;
+  position: absolute;
+  top: 6px;
+  left: -11.5px;
+}
+
+.room-msg>div[self="1"] {
+  flex-direction: row-reverse;
+}
+
+.room-msg>div[self="1"]>div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.room-msg>div[self="1"] span {
+  margin: 5px 10px 10px 0px;
+}
+
+.room-msg>div[self="1"] span::after {
+  border-right: 6px solid transparent;
+  border-left: 6px solid #fff;
+  left: unset;
+  right: -11.5px;
+}
+
+.room-chat-switch {
+  background-color: #f9f9ff;
+  border-radius: 0px 0px 12px 12px;
+  height: 40px;
+  width: 50px;
+  border: 4px solid #ad4234;
+  border-top: 0;
+  overflow: hidden;
+}
+
+.room-chat-switch>form {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 300px;
+}
+
+.room-chat-switch span {
+  margin: 7px;
+  background-image: url('/source/svg/chat.svg');
+  height: 32px;
+  width: 32px;
+  background-size: cover;
+}
+
+.room-chat-switch a {
+  font-size: 24px;
+  color: #ad4234;
+  white-space: nowrap;
+}
+
+#room-input {
+  color: #ad4234;
+  background: transparent;
+  border: 0;
+  border-bottom: 2.5px solid #ad4234;
+  font-size: 20px;
+  width: 236px;
+  font-family: seto;
+}
+
+#room-input:focus {
+  outline: none;
+}
+
+.room-submit {
+  display: none;
+}

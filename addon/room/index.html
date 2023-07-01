@@ -1,0 +1,326 @@
+<div class="room-body room-joiner">
+  <input type="checkbox" id="room-chat" checked>
+  <label class="room-chat" for="room-chat">
+    <div class="room-msg">
+      <div>
+        <img src="/source/1.png">
+        <div>
+          <p>七月</p>
+          <span>文明用语，从我做起。</span>
+        </div>
+      </div>
+    </div>
+    <div class="room-chat-switch">
+      <form id="room-send">
+        <span></span>
+        <input type="text" id="room-input" autocomplete="off">
+        <button class="room-submit">
+      </form>
+    </div>
+  </label>
+  <div>
+    <input type="radio" name="room-display" id="room-status">
+    <input type="radio" name="room-display" id="room-desk" checked>
+    <div class="room-status" for="room-status">
+      <div class="room-head">
+        <w></w>
+        <a class="room-title">房间标题</a>
+        <div onclick="$(`#room-${$('#room-desk').is(':checked') ? 'status' : 'desk'}`).click()"></div>
+      </div>
+      <div class="room-info"></div>
+    </div>
+    <div class="room-desk" for="room-desk" mate-show="grid" url="/source/img/room-bg.png">
+      <div class="room-mate-grid"></div>
+      <div class="room-mate-list">
+        <l>
+          <n></n>
+          <a>称呼</a>
+          <a>uid</a>
+          <a>月币</a>
+          <a>状态</a>
+        </l>
+      </div>
+      <div class="room-btn">
+        <btn size="24" room-handle="invite"></btn>
+        <btn size="24"></btn>
+        <btn size="24"></btn>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="checkbox" id="room-output">
+<label class="room-output" for="room-output">
+  <div data-title="提示">确定?</div>
+</label>
+<div id="room-rcmenu">
+  <div></div>
+</div>
+<div style="display:none">
+  <div sample="room-msg">
+    <div self="{{self}}">
+      <img src="{{avatar}}">
+      <div>
+        <p>{{name}}</p>
+        <span>{{msg}}</span>
+      </div>
+    </div>
+  </div>
+  <div sample="room-mate-grid">
+    <a uid="{{uid}}" status="{{status}}">
+      <img src="{{avatar}}">
+      <div>
+        <p>{{name}}</p>
+        <p>
+          <coin></coin>{{coin}}
+        </p>
+      </div>
+      <s class="room-mate-idle"></s>
+    </a>
+  </div>
+  <div sample="room-mate-list">
+    <l uid="{{uid}}">
+      <img src="{{avatar}}">
+      <a>{{name}}</a>
+      <a>{{uid}}</a>
+      <a>{{coin}}</a>
+      <a rml-status="{{status}}"></a>
+    </l>
+  </div>
+  <div sample="room-show-mates">
+    <n>
+      <p>共{{amount}}位宴客</p>
+      <btn size="18" onclick="roomShowAll()">显示全部</btn>
+    </n>
+  </div>
+  <div sample="room-info">
+    <div>
+      <a room-info-key="{{key}}"></a>
+      <c>{{val}}</c>
+    </div>
+  </div>
+</div>
+
+<script>
+  model();
+
+  monitor['roomStart'] = info => { }
+  monitor['roomJoin'] = info => roomJoinRes(info);
+  monitor['roomInfoUpdata'] = info => roomInfoUpdata(info);
+  monitor['roomMateUpdata'] = info => roomMateUpdata(info);
+  monitor['roomLeave'] = info => msg({
+    title: '提示',
+    detail: '已离席'
+  });
+  monitor['roomClose'] = info => msg({
+    title: '提示',
+    detail: '已散场'
+  });
+
+  chat['room'] = info => {
+    machine.add('[sample="room-msg"]', info, '.room-msg');
+    $('.room-msg').scrollTop($('.room-msg').prop('scrollHeight'));
+  }
+
+  const roomHandle = {
+    invite: _ => msg({
+      title: '提示',
+      detail: '功能暂未开放'
+    }),
+    ready: _ => {
+      emit('room.ready');
+      roomMateUpdata({
+        uid: info.uid,
+        origin: 'idle',
+        status: 'ready'
+      });
+    },
+    idle: _ => {
+      emit('room.idle');
+      roomMateUpdata({
+        uid: info.uid,
+        origin: 'ready',
+        status: 'idle'
+      });
+    },
+    start: _ => roomVerify(_ => {
+      if (sessionStorage.getItem('room.ready').indexOf('uid') > 0) {
+        emit('room.start');
+        show('loader');
+      }
+      else msg({
+        title: '提示',
+        detail: '人数不足'
+      });
+    }),
+    leave: _ => roomVerify(_ => {
+      emit('room.leave');
+      show('loader');
+    }),
+    close: _ => roomVerify(_ => {
+      emit('room.close');
+      show('loader');
+    }),
+  }
+
+  $('.room-btn>btn').each((i, b) => $(b).on('click', _ => roomHandle[$(b).attr('room-handle')]()));
+
+  $('#room-send').on('submit', e => {
+    e.preventDefault();
+    if ($('#room-input').val()) {
+      emit('feature.msg', {
+        type: 'room',
+        info: $('#room-input').val()
+      });
+      machine.add('[sample="room-msg"]', {
+        avatar: window.info.avatar,
+        name: window.info.name,
+        msg: $('#room-input').val(),
+        self: 1
+      }, '.room-msg');
+      $('#room-input').val(null);
+      $('.room-msg').scrollTop($('.room-msg').prop('scrollHeight'));
+    }
+    else msg({
+      title: '喂',
+      detail: '说点什么吧'
+    });
+  });
+
+  function roomMateRefresh(info) {
+    let grid = $('.room-desk').attr('mate-show') == 'grid',
+      count = 0;
+    $('.room-mate-grid').html('');
+    $('.room-mate-list>l').each((i, l) => i && $(l).remove());
+    $('.room-mate-list>e').remove();
+    info.amount = [...info.host, ...info.ready, ...info.idle].length;
+    rclick.clearAll('roomgrid');
+    rclick.clearAll('roomlist');
+    ['host', 'ready', 'idle'].forEach(type => {
+      for (let mate of info[type]) {
+        count++ < 9 && machine.add('[sample="room-mate-grid"]', mate, '.room-mate-grid');
+        $(`.room-mate-grid>[uid="${mate.uid}"]>s`).attr('status', type);
+        machine.add('[sample="room-mate-list"]', Object.assign(mate, { status: type }), '.room-mate-list');
+        window.info.uid == mate.uid && sessionStorage.setItem('roomStatus', type);
+        ['grid', 'list'].forEach(t => {
+          let e = `.room-mate-${t}>[uid="${mate.uid}"]`;
+          rclick.add(`room${t}${mate.uid}`, p => onshow('room') && $('.room-desk').attr('mate-show') == t && touch(e, p) && roomRcmenu(e, p));
+        });
+      }
+      sessionStorage.setItem(`room.${type}`, info[type].map(mate => JSON.stringify(mate)).join('?'));
+    });
+    info.amount > 9 && machine.add('[sample="room-show-mates"]', info, '.room-mate-grid');
+    $('.room-mate-list').append('<e onclick="roomShowAll()"></e>');
+    let s = sessionStorage.getItem('roomStatus');
+    if (s == 'host') {
+      $('.room-btn>btn').eq(1).attr('room-handle', 'start');
+      $('.room-btn>btn').eq(2).attr('room-handle', 'close');
+    }
+    else {
+      $('.room-btn>btn').eq(1).attr('room-handle', s == 'idle' ? 'ready' : 'idle');
+      $('.room-btn>btn').eq(2).attr('room-handle', 'leave');
+    }
+  }
+
+  function roomMateUpdata(info) {
+    let mates = {};
+    ['host', 'ready', 'idle'].forEach(t => {
+      let i = sessionStorage.getItem(`room.${t}`);
+      mates[t] = i ? i.split('?').map(mate => JSON.parse(mate)) : [];
+    });
+    info && !info.add && mates[info.origin].forEach((mate, i) => {
+      if (mate.uid == info.uid) info.add = mates[info.origin].splice(i, 1)[0];
+    });
+    info && !info.leave && mates[info.status].splice(0, 0, info.add);
+    roomMateRefresh(mates);
+  }
+
+  function roomShowAll() {
+    let from = $('.room-desk').attr('mate-show'),
+      to = from == 'grid' ? 'list' : 'grid';
+    $('.room-desk').attr('mate-show', to);
+    $(`.room-mate-${from}`).css({
+      opacity: 0,
+      zIndex: -1,
+    });
+    $(`.room-mate-${to}`).css({
+      opacity: 1,
+      zIndex: 1,
+    });
+    roomMateUpdata();
+  }
+
+  function roomRcmenu(e, p) {
+    let uid = $(e).attr('uid'), z = $('body').css('zoom');
+    if (info.uid != uid) {
+      sessionStorage.setItem('roomActionTarget', uid);
+      $('#room-rcmenu').css({
+        left: p.clientX / z,
+        top: p.clientY / z
+      });
+      $('#room-rcmenu').fadeIn(200, _ => $('#room-rcmenu').css('transition', '0.15s'));
+      lclick.add('roomRcmenu', p => onshow('room') && !touch('#room-rcmenu', p) && $('#room-rcmenu').css('transition', '') && $('#room-rcmenu').fadeOut(200));
+      let list = {
+        host: ['praise', 'talk', 'report', 'transfer', 'kick'],
+        ready: ['praise', 'talk', 'report'],
+        idle: ['praise', 'talk', 'report']
+      }[sessionStorage.getItem('roomStatus')];
+      $('#room-rcmenu>div').html('');
+      list.forEach(a => $('#room-rcmenu>div').append(`<a room-action="${a}"></a>`));
+      lclick.add('roomAction', p => {
+        touch('#room-rcmenu a', p) && roomAction($('#room-rcmenu a').eq(touch('#room-rcmenu a', p) - 1).attr('room-action'), uid);
+      })
+    }
+  }
+
+  function roomAction(type, uid) {
+    $('#room-rcmenu').css('transition', '');
+    $('#room-rcmenu').fadeOut(200);
+    let action = {
+      praise: uid => { },
+      talk: uid => { },
+      report: uid => { },
+      transfer: uid => { },
+      kick: uid => { }
+    };
+    type in action && action[type](uid);
+  }
+
+  function roomInfoUpdata(info) {
+    $('.room-info').html('');
+    for (let key in info) {
+      machine.add('[sample="room-info"]', {
+        key: key,
+        val: info[key]
+      }, '.room-info');
+    }
+  }
+
+  function roomJoinReq(rid) {
+    emit('room.join', rid);
+    show('loader');
+  }
+
+  function roomJoinRes(info) {
+    show('room', 500);
+    roomMateRefresh(info);
+    roomInfoUpdata(info.info);
+    sessionStorage.setItem('room.type', info.type);
+    $('.room-title').text(info.title);
+  }
+
+  function roomVerify(f) {
+    $('.room-output>div').off();
+    $('.room-output>div').on('click', _ => f());
+    if ($('.room-output').css('opacity') == 0) {
+      $('#room-output').click();
+    }
+    else {
+      $('#room-output').click();
+      setTimeout(_ => {
+        $('#room-output').click();
+      }, 300);
+    }
+  }
+
+  //emit('room.close')
+</script>

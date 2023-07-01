@@ -1,0 +1,89 @@
+<a class="opt-press">Press Any Key</a>
+<div class="opt-body">
+  <div class="opt-game">
+    <div class="opt-game-all" onclick="show('gametap')">全部玩法</div>
+    <div class="opt-game-hot" show="p21">
+      <img>
+      <a></a>
+      <div text="" onclick="optIntro()"></div>
+    </div>
+  </div>
+  <div class="opt-user">
+    <div class="opt-user-info">
+      <img>
+      <a></a>
+    </div>
+    <div class="opt-user-coin">
+      <coin></coin><span></span>
+    </div>
+  </div>
+  <div class="opt-system">
+    <div class="opt-notice" onclick="optNotice()">
+      <div>最新公告</div>
+      <a>[5.20]设置界面已经做完了但目前仍是鼠标滚轮上滑作为返回操作，之后可自定义。旁观功能写好了，但还没测试过，敬请期待。</a>
+    </div>
+    <div class="opt-public" onclick="optUnable()">
+      <div></div>
+      <a>社区</a>
+    </div>
+    <div class="opt-setting" onclick="show('setting')">
+      <div></div>
+      <a>设置</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  lclick.add('opt-press', _ => {
+    lclick.clear('opt-press');
+    $('.opt-press').css('opacity', 0);
+    setTimeout(_ => {
+      $('.opt-press').remove();
+      if (!$.cookie('info')) show('usertap');
+      else {
+        $('.opt-body').css('opacity', '1');
+        $('.opt-body').css('visibility', 'visible');
+      }
+    }, 300);
+  });
+  $.getJSON(`/game/${$('.opt-game-hot').attr('show')}/${$('.opt-game-hot').attr('show')}.json`, data => {
+    $('.opt-game-hot>a').text(data.display);
+    $('.opt-game-hot>a').on('click', _ => roomListShow($('.opt-game-hot').attr('show')));
+    $('.opt-game-hot>img').attr('src', data.poster);
+    $('.opt-game-hot>img').on('click', _ => roomListShow($('.opt-game-hot').attr('show')));
+    $('.opt-game-hot>div').attr('text', data.introduction);
+    if ($.cookie('info')) {
+      $('.opt-user-info>img').attr('src', window.info.avatar);
+      $('.opt-user-info>a').text(window.info.name);
+      $('.opt-user-coin>span').text(window.info.coin);
+    }
+  });
+  function optUnable() {
+    msg({
+      title: '提示',
+      detail: '暂未开放'
+    });
+  }
+  function optNotice() {
+    table({
+      head: '最新公告',
+      body: [
+        {
+          type: 'txt',
+          display: $('.opt-notice>a').text()
+        }
+      ]
+    });
+  }
+  function optIntro() {
+    table({
+      head: $('.opt-game-hot>a').text(),
+      body: [
+        {
+          type: 'txt',
+          display: $('.opt-game-hot>div').attr('text')
+        }
+      ]
+    });
+  }
+</script>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/source/css/models.css">
+  <link rel="preload" href="/source/seto.woff2" as="font" type="font/woff2" crossorigin>
+  <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+  <link rel="shortcut icon" href="/source/svg/logo.svg">
+  <link rel="stylesheet" type="text/css" href="/source/css/index.css">
+  <link rel="stylesheet" type="text/css" href="/source/css/fabric.css">
+  <title>东方祈符宴</title>
+  <script src="/source/js/public.js"></script>
+</head>
+
+<body onshow="option">
+  <!-- <iframe class="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width="220" height="52" src="https://music.163.com/outchain/player?type=2&id=22780405&auto=1&height=32"></iframe> -->
+  <div id="loadingDiv">
+    <div class="maintain">
+      <span class="taiji">&ensp;</span>
+      <div class="loader-letters">
+        <span class="letter">少</span>
+        <span class="letter">女</span>
+        <span class="letter">祈</span>
+        <span class="letter">祷</span>
+        <span class="letter">中</span>
+        <span class="letter">&ensp;.</span>
+        <span class="letter">&ensp;.</span>
+        <span class="letter">&ensp;.</span>
+      </div>
+    </div>
+  </div>
+  <div class="table">
+    <div class="table-screen"></div>
+    <div class="table-head">
+      <a></a>
+    </div>
+    <div class="table-body"></div>
+  </div>
+  <div class="msg"></div>
+  <div class="whole"></div>
+  <div class="loader" relay="true"></div>
+  <!-- <div class="head">
+    <span>请善用鼠标滚轮哦~</span>
+  </div> -->
+  <div class="footer">
+    <span>
+      <span>Copyright©2022 {{domain}}.All rights reserved.</span>
+      <span>本站发布内容如无特别声明则其一切权利归属于其发布者、创作者或各自的版权所有者。</span>
+    </span>
+  </div>
+  <div class="screen"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/source/js/vue.js"></script>
+  <script src="/source/js/jq.js"></script>
+  <script src="/source/js/jsrsasign.js"></script>
+  <script src="/source/js/aes.js"></script>
+  <script>
+    const socket = io();
+
+    const monitor = {
+      accountInfo: (info) => {
+        if (info) window.info = info;
+        else {
+          let r = confirm('宁的账号已在线，是否继续登录？\n(会挤掉)');
+          if (r) {
+            emit('account.squeeze');
+            setTimeout(() => location.reload(), 100);
+          }
+          else window.close();
+        }
+      },
+      squeeze: () => {
+        confirm('宁的账号在别处登录');
+        location.href = 'https://baidu.com';
+      },
+      msg: info => chat[onshow()](info)
+    };
+
+    const chat = {}
+
+    socket.on('!', (data) => {
+      let bytes = CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(sessionStorage.getItem('key')), { iv: CryptoJS.enc.Utf8.parse(sessionStorage.getItem('iv')) });
+      let info = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      monitor[info.type](info.info);
+      console.log('receive:' + info.type);
+    })
+    socket.on('preload', (info) => {
+      preloadRes(info);
+      $('.loader-letters').animate({ top: innerHeight * 0.3 });
+      $('.taiji').animate({ bottom: innerHeight * 0.3 });
+      $('#loadingDiv').fadeOut('500', () => {
+        $('#loadingDiv').remove();
+        let height = innerHeight / 680;
+        let width = innerWidth / 920;
+        $('body').animate({ zoom: `${(height > width) ? innerWidth / 900 : innerHeight / 640}` }, 400);
+        $('.snowtap').fadeIn(100);
+        $('.option').fadeIn(100);
+      });
+    });
+
+    //setInterval(() => socket.emit('account.autoLog'), 60000);
+
+    // cookieStore.addEventListener('change',()=>{
+    //   $.removeCookie('info');
+    //   window.close();
+    // });
+
+    function table(info) {
+      lclick.add('table', p => !touch('.table', p) && $('.table').css('opacity') == 1 && $('.table').fadeOut(250));
+      $('.table').fadeOut(250, () => {
+        $('.table-body').html(null);
+        $('.table-head>a').text(info.head);
+        info.body.forEach((mod) => $('.table-body').append(`
+        ${(mod.type == 'input') ? `<input id="${mod.id}" type="${mod.pwd ? 'password' : 'text'}" placeholder="${mod.display}" />` : ''}
+        ${(mod.type == 'btn') ? `<a onclick="${mod.event}">${mod.display}</a><div></div>` : ''}
+        ${(mod.type == 'txt') ? `<p>${mod.display}</p>` : ''}
+        ${(mod.type == 'img') ? `<img src="${mod.src}">` : ''}`));
+        $('.table').fadeIn(250);
+      })
+    }
+    function msg(info, event) {
+      $('.msg').prepend(`<div><a>${info.title}</a><span>${info.detail}</span></div>`)
+      pulse.add('msg', _ => {
+        $('.msg>div').each((i, m) => {
+          let p = Number($(m).css('--process')) + 5 / 8;
+          if (p > 100) {
+            $(m).fadeOut(400, _ => {
+              $(m).remove();
+              !$('.msg>div').length && pulse.clear('msg');
+            });
+          }
+          else {
+            $(m).css('background-image', `linear-gradient(90deg, white ${p}%, transparent ${p}% 100%)`);
+            $(m).css('--process', p);
+          }
+        })
+      }, 25);
+      $('.msg>div').eq(0).animate({ zoom: 1 }, 250);
+      $('.msg>div').eq(0).on('mousedown', e => {
+        e.which == 3 && event && show(event);
+        $('.msg>div').eq(0).fadeOut(400, _ => {
+          $('.msg>div').eq(0).off();
+          $('.msg>div').eq(0).remove();
+          !$('.msg>div').length && pulse.clear('msg');
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

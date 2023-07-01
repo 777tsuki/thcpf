@@ -1,0 +1,5 @@
+{
+  "introduction": "",
+  "css": ["room.css", "rcmenu.css", "grid.css", "chat.css", "list.css", "status.css"],
+  "disableWheelControl": true
+}

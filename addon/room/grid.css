@@ -1,0 +1,110 @@
+.room-mate-grid {
+  display: flex;
+  padding: 20px 20px 0px 20px;
+  width: 510px;
+  height: 410px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  opacity: 1;
+  z-index: 1;
+  transition: 0.4s;
+  position: absolute;
+  overflow: hidden;
+}
+
+.room-mate-grid>a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  width: 250px;
+  height: 72px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+  transition: 0.3s;
+}
+
+.room-mate-grid>a:hover {
+  background: rgba(255, 255, 255);
+}
+
+.room-mate-grid div {
+  display: grid;
+  align-content: space-evenly;
+  height: 60px;
+}
+
+.room-mate-grid p {
+  color: #790e00;
+  width: 148px;
+  margin: 0;
+  font-size: 18px;
+}
+
+.room-mate-grid p:nth-child(1) {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+  white-space: nowrap;
+}
+
+.room-mate-grid p:nth-child(2) {
+  display: flex;
+  align-items: center;
+}
+
+.room-mate-grid coin {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  margin-right: 4px;
+}
+
+.room-mate-grid img {
+  margin-left: 6px;
+  border-radius: 50%;
+  height: 60px;
+}
+
+.room-mate-grid s {
+  width: 24px;
+  height: 72px;
+  background-size: 80%;
+  background-color: #cdcdcd;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: 0.4s;
+}
+
+.room-mate-grid n {
+  display: grid;
+  overflow: hidden;
+  width: 250px;
+  height: 72px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  justify-items: center;
+  align-content: space-evenly;
+}
+
+.room-mate-grid n>p {
+  width: unset;
+  text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white, 0 0 3px white;
+}
+
+.room-mate-grid n>btn {
+  width: unset;
+}
+
+.room-mate-grid s[status="host"] {
+  background-color: #ffea72;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'%3E %3Cpath fill='%23fff' d='M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.4 7.7-.8L128 416h384l72.3-192.8c2.5.4 5.1.8 7.7.8 26.5 0 48-21.5 48-48s-21.5-48-48-48z'%3E%3C/path%3E %3C/svg%3E");
+}
+
+.room-mate-grid s[status="ready"] {
+  background-color: rgb(255 156 156);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E %3Cpath fill='%23fff' d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z'%3E%3C/path%3E %3C/svg%3E");
+}

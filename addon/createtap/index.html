@@ -1,0 +1,90 @@
+<a class="create-title"><span>创建符台</span></a>
+<div class="create-main">
+  <div class="create-option">
+    <div></div>
+    <a class="create-btn" onclick="createReq()">创建</a>
+  </div>
+  <div class="create-detail"></div>
+</div>
+
+<div id="create-samples" style="display:none">
+  <div sample="create-option">
+    <input id="create-{{option}}" type="radio" name="create-options">
+  </div>
+  <div sample="create-display">
+    <label for="create-{{option}}">
+      <span>{{display}}</span><span></span>
+    </label>
+  </div>
+  <div sample="create-detail">
+    <div id="create-detail-{{option}}">
+      <div class="create-models"></div>
+    </div>
+  </div>
+  <div sample="create-mod">
+    <input id="create-{{option}}-{{model}}" type="radio" name="create-{{option}}">
+  </div>
+  <div sample="create-model">
+    <label class="create-model" for="create-{{option}}-{{model}}">
+      <p>{{display}}</p>
+      <a>{{detail}}</a>
+    </label>
+  </div>
+</div>
+
+<script>
+  monitor['roomCreate'] = info => createRes(info);
+
+  async function createtapShow(type) {
+    $('.create-main').attr('game', type);
+    $('.create-main>input').remove();
+    $('.create-option>div').html(null);
+    $('.create-detail').html(null);
+    $('style').remove();
+    $('.create-main').off();
+    $.getJSON(`/game/${type}/${type}.json`, (data) => {
+      const ops = data.createtap;
+      const o = [];
+      ops.forEach((op) => {
+        o.push(op.option);
+        machine.add('[sample="create-detail"]', op, '.create-detail');
+        machine.add('[sample="create-display"]', op, '.create-option>div');
+        machine.pre('[sample="create-option"]', op, '.create-main');
+        $('head').append(`<style>#create-${op.option}:checked~.create-detail>#create-detail-${op.option}{opacity:1;z-index:10}</style>`);
+        $('head').append(`<style>#create-${op.option}:checked~.create-option>div>[for="create-${op.option}"]{background:linear-gradient(to right, transparent, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08), transparent)}</style>`);
+        op.ignore ? $(`[for="create-${op.option}"]`).attr('ignore', true) : 0;
+        op.models.forEach((mod, index) => {
+          mod.detail = mod.detail.replaceAll('{{name}}', window.info.name);
+          mod.detail = mod.detail.replaceAll('[[input]]', `<input id="create-${op.option}-input" type="text" minlength="5" maxlength="9" placeholder="写这里写这里" class="create-input" />`);
+          let info = Object.assign(op, mod);
+          machine.add('[sample="create-mod"]', info, `#create-detail-${op.option}>.create-models`);
+          machine.add('[sample="create-model"]', info, `#create-detail-${op.option}>.create-models`);
+          $('head').append(`<style>#create-${op.option}-${mod.model}:checked~[for="create-${op.option}-${mod.model}"]{border:4px solid rgb(255, 139, 139)}</style>`);
+          (index == 0) ? $(`#create-${op.option}-${mod.model}`).click() : 0;
+          (mod.style == 'long') ? $(`[for="create-${op.option}-${mod.model}"]`).css('width', '280px') : 0;
+        });
+      });
+      $('.create-main').attr('from', o);
+      $('.create-main').on('click', () => $('.create-main').attr('from').split(',').forEach((op) => $(`[for="create-${op}"]`).children('span').eq(1).text(($(`[for="${$(`input[name="create-${op}"]:checked`).attr('id')}"]`).children('a').html().indexOf('-input') == -1) ? $(`[for="${$(`input[name="create-${op}"]:checked`).attr('id')}"]`).children('a').text() : $(`[for="${$(`input[name="create-${op}"]:checked`).attr('id')}"]`).children('a').children('input').val())));
+      $('[name="create-options"]').eq(ops.length - 1).click();
+      show('createtap');
+    });
+  }
+  function createReq() {
+    let info = {};
+    $('.create-main').attr('from').split(',').forEach((op) => {
+      if ($(`[for="create-${op}"]`).attr('ignore')) return;
+      else info[op] = $(`[for="create-${op}"]`).children('span').eq(1).text();
+    });
+    info.type = $('.create-main').attr('game');
+    emit('room.create', info);
+    show('loader');
+  }
+  function createRes(info) {
+    msg({
+      title: '提示',
+      detail: '创建成功'
+    });
+    roomJoinRes(info);
+  }
+</script>

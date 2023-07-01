@@ -1,0 +1,171 @@
+.createtap {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    position: fixed;
+    display: none;
+    width: 720px;
+    height: 480px;
+    border-radius: 12px 12px 12px 12px;
+    box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
+        0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+}
+
+.create-title {
+    position: relative;
+    z-index: 2;
+    height: 50px;
+    width: 720px;
+    background-image: linear-gradient(45deg, rgb(255, 180, 180) 25%, rgb(255, 209, 209) 25% 50%, rgb(255, 180, 180) 50% 75%, rgb(255, 209, 209) 75% 100%);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 12px 12px 0px 0px;
+    text-align: center;
+    font-size: 28px;
+    color: #904242;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-main {
+    display: flex;
+    width: 720px;
+    height: 430px;
+    border-radius: 0px 0px 12px 12px;
+    overflow: hidden;
+}
+
+.create-option {
+    z-index: 1;
+    border-radius: 0px 0px 0px 12px;
+    background: rgba(249, 249, 255, 0.85);
+    width: 240px;
+    height: 430px;
+    box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
+        0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(8px);
+    display: grid;
+    align-content: space-between;
+    justify-items: center;
+}
+
+.create-option>div>label {
+    height: 56px;
+    width: 180px;
+    border-bottom: 2px solid rgb(255, 103, 103);
+    margin: auto;
+    text-align: center;
+    font-size: 20px;
+    color: #79331e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px;
+    transition: all 0.3s ease 0s;
+}
+
+.create-option>div>label:hover {
+    background: rgba(249, 249, 255, 1);
+}
+
+.create-option>div>label>span {
+    text-overflow: ellipsis;
+    max-width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.create-btn {
+    height: 20px;
+    color: white;
+    margin: 30px;
+    background-color: rgb(233, 113, 113);
+    border: 4px solid rgb(233, 113, 113);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    font-size: 20px;
+    letter-spacing: 0.2rem;
+    padding: 0.7rem 1.5rem;
+    transition: all 0.4s;
+}
+
+.create-btn:hover {
+    background-color: transparent;
+    color: rgb(233, 113, 113);
+    box-shadow: none;
+}
+
+.create-btn:active {
+    transform: scale(0.9);
+}
+
+.create-detail {
+    width: 480px;
+    height: 430px;
+    border-radius: 0px 0px 12px 0px;
+    background: url('/source/background/img/psc (3).webp');
+    background-size: cover;
+}
+
+.create-detail>div {
+    opacity: 0;
+    transition: 0.3s;
+    position: absolute;
+    width: 480px;
+    z-index: -1;
+}
+
+.create-models {
+    display: flex;
+    position: relative;
+    width: 480px;
+    height: 130px;
+    margin: 12px auto;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.create-model {
+    align-content: center;
+    display: grid;
+    place-items: center;
+    width: 140px;
+    height: 120px;
+    margin: 5px;
+    background: #f9f9ff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    transition: transform 0.4s;
+}
+
+.create-model:hover {
+    transform:translateY(-4px);
+}
+
+.create-model>p,
+.create-model>a {
+    margin: 5px;
+    font-size: 24px;
+    color: #ad4234;
+    text-align: center;
+}
+
+.create-input {
+	color: #ad4234;
+	background: transparent;
+	border: 0;
+	border-bottom: 2.5px solid #ad4234;
+	font-size: 24px;
+	width: 85%;
+	font-family: seto;
+	z-index: 100;
+	text-align: center
+}
+
+.create-input:focus {
+	outline: none;
+}

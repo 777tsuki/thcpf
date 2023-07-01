@@ -1,0 +1,73 @@
+<div class="roomList-page">
+  <last onclick="roomPage(-1)"></last>
+  <next onclick="roomPage(1)"></next>
+</div>
+<div class="roomList-body">
+  <div class="roomList-list"></div>
+  <btn size="24" onclick="createtapShow('p21')">新添符台</btn>
+</div>
+<div id="roomList-samples" style="display:none">
+  <div sample="roomList-room">
+    <div class="roomList-room" rid="{{rid}}">
+      <a class="roomList-list-host" style="background-image:url('{{avatar}}')" title="{{host}}的符台">
+        <span>{{host}}</span>
+      </a>
+      <div>
+        <div class="roomList-list-title">{{title}}</div>
+        <div class="roomList-list-detail">
+          <div>
+            <p>底分</p>{{unit}}
+          </div>
+          <div>
+            <p>旁观</p><a observe="{{observe}}">&ensp;</a>
+          </div>
+          <div>
+            <p>状态</p>{{playing}}
+          </div>
+          <div>
+            <p>人数</p>{{size}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  model();
+  addon('room');
+
+  monitor['roomList'] = info => roomListRes(info);
+
+  function roomListShow(type) {
+    show('loader');
+    $('.roomList-list').html(null);
+    emit('room.list', type);
+    $('.roomList-list').attr('game', type);
+  }
+
+  function roomListRes(rooms) {
+    !rooms.length && msg({
+      title: '嗯',
+      detail: '空空如也'
+    });
+    $('.roomList-list').html('');
+    dbclick.clearAll('rooms');
+    if (rooms.length > 8) {
+      $('.roomList-page>next').css('visibility', 'visible');
+      rooms.splice(8, 1);
+    }
+    rooms.forEach((room) => {
+      machine.add('[sample="roomList-room"]', room, '.roomList-list');
+    });
+    ['createtap'].forEach((id) => (window.addons.indexOf(id) == -1) ? addon(id) : 0);
+    $('.roomList-list>div').each((i, r) => {
+      dbclick.add(`rooms${i}`, p => onshow('roomList') && touch(`.roomList-list>[rid="${$(r).attr('rid')}"]`, p) && roomJoinReq($(r).attr('rid')));
+    })
+    show('roomList', 500);
+  }
+  
+  function roomPage(to) {
+    console.log(to)
+  }
+</script>

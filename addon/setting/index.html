@@ -1,0 +1,19 @@
+<input type="radio" name="set-switch" id="set-user" checked>
+<input type="radio" name="set-switch" id="set-view">
+<input type="radio" name="set-switch" id="set-func">
+<div class="set-body">
+  <label for="set-user">账户</label>
+  <label for="set-view">外观</label>
+  <label for="set-func">功能</label>
+  <div class="set-user">
+    <btn size="24" onclick="account.logout()">退出登陆</btn>
+    <btn size="24" onclick="account.reset()">修改密码</btn>
+    <btn size="24" onclick="$('#avatar-input').click()">更换头像</btn>
+  </div>
+  <div class="set-view"></div>
+  <div class="set-func"></div>
+</div>
+
+<script>
+  model();
+</script>

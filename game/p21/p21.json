@@ -1,0 +1,126 @@
+{
+    "display": "二十一点",
+    "introduction": "有1到11共十一张牌，每回合双方各摸一张明牌一张底牌和一张符卡。<br><br>回合内可以进行操作，选择祈符，抽一张明牌，或推让，跳过操作，祈符有三分之一的概率抽到一张符卡，操作完后进入对方回合。双方都推让时，进行本局结算。除此之外，也可以在自己的回合结束前使用符卡。<br><br>结算时，若一方的牌点数和小于限制，另一方大于限制，则小的一方获胜，除此之外，点数和靠近限制的一方获胜，该限制默认为21。失败方将扣除和赌注同数量的残机，赌注默认为1。本局结束。<br><br>所有未使用的符卡会保留到下一局，牌则会清空重新开始。<br><br>一方没有残机时，游戏结算，胜方获得倍率为失去残机数+1的底分作为奖励，败方则是失去。",
+    "poster": "/source/background/img/psc (4).webp",
+    "css": ["css/p21.css", "css/p21-msg.css", "css/p21-desk.css", "css/p21-animate.css", "css/p21-fabric.css"],
+    "redis_db": 7,
+    "desk": "2p",
+    "room_info_res": [
+        "host",
+        "title",
+        "avatar",
+        "unit",
+        "observe",
+        "state",
+        "size"
+    ],
+    "room_list":[
+        {
+            "type":"unit",
+            "display":"底分"
+        },
+        {
+            "type":"observe",
+            "display":"旁观",
+            "style":"switch"
+        },
+        {
+            "type":"state",
+            "display":"状态"
+        },
+        {
+            "type":"size",
+            "display":"人数"
+        }
+    ],
+    "createtap": [
+        {
+            "option": "game",
+            "display": "玩法",
+            "models": [
+                {
+                    "model": "default",
+                    "display": "预设",
+                    "detail": "二十一点"
+                }
+            ],
+            "descrip": "这里是游戏说明",
+            "ignore":true
+        },
+        {
+            "option": "title",
+            "display": "标题",
+            "models": [
+                {
+                    "model": "default",
+                    "display": "预设",
+                    "detail": "{{name}}的符台",
+                    "style": "long"
+                },
+                {
+                    "model": "custom",
+                    "display": "自定义",
+                    "detail": "[[input]]",
+                    "style": "long"
+                }
+            ],
+            "descrip": "这里是标题说明"
+        },
+        {
+            "option": "unit",
+            "display": "底分",
+            "models": [
+                {
+                    "model": "u5",
+                    "display": "预设",
+                    "detail": "5"
+                },
+                {
+                    "model": "u10",
+                    "display": "预设",
+                    "detail": "10"
+                },
+                {
+                    "model": "u20",
+                    "display": "预设",
+                    "detail": "20"
+                }
+            ],
+            "descrip": "这里是底分说明"
+        },
+        {
+            "option": "observe",
+            "display": "旁观",
+            "models": [
+                {
+                    "model": "on",
+                    "display": "允许",
+                    "detail": "on"
+                },
+                {
+                    "model": "off",
+                    "display": "禁止",
+                    "detail": "off"
+                }
+            ],
+            "descrip": "这里是旁观说明"
+        },
+        {
+            "option":"pwd",
+            "display":"密码",
+            "models":[
+                {
+                    "model":"default",
+                    "display":"关",
+                    "detail":"off"
+                },
+                {
+                    "model":"custom",
+                    "display":"开",
+                    "detail":"[[pwd]]"
+                }
+            ]
+        }
+    ],
+    "room_tags":["rid","host","avatar","unit","observe","state","size"]
+}

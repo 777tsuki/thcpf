@@ -1,0 +1,147 @@
+<div class="p21-body">
+  <input type="checkbox" id="p21-chat" checked>
+  <label class="p21-chat" for="p21-chat">
+    <div class="p21-msg">
+      <div>
+        <img src="/source/1.png">
+        <div>
+          <p>七月</p>
+          <span>文明用语，从我做起。</span>
+        </div>
+      </div>
+    </div>
+    <div class="p21-chat-switch">
+      <form id="p21-send">
+        <span></span>
+        <input type="text" id="p21-input" autocomplete="off">
+        <button class="p21-submit">
+      </form>
+    </div>
+  </label>
+  <div>
+    <input type="checkbox" id="p21-status">
+    <input type="checkbox" id="p21-desk" checked>
+    <div class="p21-status" for="p21-status" onclick="p21help()">操作方法</div>
+    <div class="p21-desk" for="p21-desk">
+      <div>
+        <div id="p21-p0card"></div>
+        <div>
+          <div id="p21-p0info">
+            <img src="{{avatar}}">
+            <div>
+              <p class="p21-name">{{name}}</p>
+              <p class="p21-life">✪✪✪✪✪</p>
+            </div>
+            <a class="p21-loader"></a>
+          </div>
+          <div id="p21-p0effect"></div>
+        </div>
+        <div id="p21-ops"></div>
+        <div>
+          <div id="p21-p1info">
+            <img src="{{avatar}}">
+            <div>
+              <p class="p21-name">{{name}}</p>
+              <p class="p21-life">✪✪✪✪✪</p>
+            </div>
+            <a class="p21-loader"></a>
+          </div>
+          <div id="p21-p1effect"></div>
+        </div>
+        <div id="p21-p1card"></div>
+      </div>
+    </div>
+    <div class="p21-excard">
+      <div></div>
+    </div>
+  </div>
+</div>
+<input type="checkbox" id="p21-items">
+<div class="p21-items"></div>
+<input type="checkbox" id="p21-output">
+<label class="p21-output" for="p21-output"></label>
+<div class="p21-samples" style="display:none">
+  <div sample="p21-msg">
+    <div self="{{self}}">
+      <img src="{{avatar}}">
+      <div>
+        <p>{{name}}</p>
+        <span>{{msg}}</span>
+      </div>
+    </div>
+  </div>
+  <div sample="p21-excardNote">
+    <a class="p21-{{type}}" num="{{num}}">
+      <n>{{num}}</n><span>{{sign}}</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  $.getScript('/game/p21/function.js', _ => {
+    // p21state(1);
+    // p21option('round');
+    // for (let n = 1; n < 12; n++) {
+    //   let i = {
+    //     type: 'input',
+    //     num: n
+    //   }
+    //   p21exNote(i);
+    //   p21exAdd(i);
+    // }
+  });
+  rclick.add('p21', _ => onshow('p21') && $('#p21-items').click());
+
+  monitor['p21-start'] = info => p21start(info);
+  monitor['p21-excard'] = info => p21excard(info);
+  monitor['p21-addEx'] = info => setTimeout(_ => p21exAdd(info), 500);
+  monitor['p21-card'] = info => p21cardAdd(info);
+  monitor['p21-tip'] = info => p21tip(info);
+  monitor['p21-result'] = info => p21result(info);
+  monitor['p21-turn'] = _ => p21turn();
+  monitor['p21-origin'] = info => p21origin(info);
+  monitor['p21-suspend'] = info => p21suspend(info);
+
+  chat['p21'] = info => {
+    machine.add('[sample="p21-msg"]', info, '.p21-msg');
+    $('.p21-msg').scrollTop($('.p21-msg').prop('scrollHeight'));
+  }
+
+  $('.p21-excard').mousedown(event => {
+    let scroll = $('.p21-excard').scrollLeft();
+    $(document).on('mousemove', e => $('.p21-excard').scrollLeft(scroll - e.clientX + event.clientX));
+    $(document).on('mouseup', _ => {
+      $(document).off('mousemove');
+      $(document).off('mouseup');
+    });
+  });
+  $('#p21-send').on('submit', e => {
+    e.preventDefault();
+    emit('feature.msg', {
+      type: 'room',
+      info: $('#p21-input').val()
+    });
+    machine.add('[sample="p21-msg"]', {
+      avatar: window.info.avatar,
+      name: window.info.name,
+      msg: $('#p21-input').val(),
+      self: 1
+    }, '.p21-msg');
+    $('#p21-input').val(null);
+    $('.p21-msg').scrollTop($('.p21-msg').prop('scrollHeight'));
+  });
+
+  function p21help() {
+    table({
+      head: '操作方法',
+      body: [
+        {
+          type: 'txt',
+          display: `①长按按钮来进行操作，这是为了不让你手贱点错。<br>
+          ②右键打开和关闭符卡界面，在符卡界面通过双击来使用符卡。<br>
+          ③鼠标移动到自己的底牌上可以查看自己的底牌数字。<br>`
+        }
+      ]
+    });
+  }
+</script>
