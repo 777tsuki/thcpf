@@ -1,0 +1,58 @@
+# 这里是服务端的配置文件，重要的配置项可以在这里快速修改。
+
+[server]
+domain = 'bt233.fun'
+port = 2053
+pub_key = './keys/rsa_public.key'
+priv_key = './keys/rsa_private.key'
+
+[ssl]
+active = false
+key = './keys/localhost-key.pem'
+cert = './keys/localhost.pem'
+
+[cookie]
+over_time = 120000
+age = 33554432
+
+[redis]
+host = '127.0.0.1'
+pwd = ''
+account_db = 6
+
+[mongodb]
+url = 'mongodb://localhost:27017/'
+db = 'thcpf'
+
+[mail]
+method = 'post'
+
+[mail.nodemailer]
+service = 'Gmail'
+
+[mail.nodemailer.auth]
+user = ''
+pass = ''
+
+[mail.postmailer]
+url = 'https://app.bt233.fun/mail'
+
+[mail.postmailer.info]
+token = '$2a$10$YZMOCCLdoUdboFBFdtZwzeOcsjASjGV.lJSBSjWTZb74uByb0Zd/u'
+
+[image]
+method = 'dist'
+upload = 'https://api.7tsuki.fun/upload/img:'
+dist = './source/uploads/img/'
+url = '/source/uploads/img/'
+
+[addon]
+default = [
+  "usertap",
+  "snowtap",
+  "option",
+  "gametap",
+  "accounttap",
+  "roomList",
+  "setting"
+]
