@@ -42,7 +42,7 @@ window.onload = _ => {
   });
 };
 
-document.addEventListener("touchmove", function (e) { e.preventDefault() }, { passive: false });
+// document.addEventListener("touchmove", function (e) { e.preventDefault() }, { passive: false });
 
 window.addEventListener('resize', _ => {
   let height = innerHeight / 680;
@@ -275,7 +275,8 @@ window.onhashchange = hashChange
 //滚轮控制
 
 function control(e) {
-  const delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
+  // const delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
+  const delta = e;
   if (delta != 0) {
     $('body').attr('onControl', 2);
     if ($(`.${onshow()}`).attr('disableWheelControl'));
