@@ -28,7 +28,8 @@ axios.defaults.crossDomain = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 module.exports = {
-  autoLog: (_, head, callback) => {
+  autoLog: (cookie, head, callback) => {
+    if (cookie) head.cookie.info = cookie;
     if (head.cookie != undefined && head.cookie != null) if (head.cookie.info != undefined && head.cookie.info != null) {
       const emit = [];
       MongoClient.connect(data.mongodb.url, { useUnifiedTopology: true }, async (err, db) => {
