@@ -98,6 +98,17 @@ io.on('connection', (socket) => {
     apps[type[0]][type[1]](info.info, head, async (info, cache, room, game) => handle(socket, head, info, cache, room, game));
     console.log('receive:' + info.type);
   });
+  socket.on(':', async (info) => {
+    const head = {
+      ip: (socket.handshake.headers['x-forwarded-for'] != null) ? socket.handshake.headers['x-forwarded-for'] : socket.handshake.address,
+      cookie: info.cookie,
+      sid: socket.id,
+      time: new Date().getTime(),
+      cache: socket.data.cache,
+      room: (socket.data.room) ? [socket.sid, socket.data.room] : [socket.sid]
+    }
+    console.log(info)
+  });
   socket.on('disconnect', _ => {
     const head = {
       cookie: (socket.handshake.headers.cookie == null) ? null : cookie.parse(socket.handshake.headers.cookie),
