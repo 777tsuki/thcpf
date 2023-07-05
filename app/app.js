@@ -72,14 +72,19 @@ app.get('/%7B%7Bavatar%7D%7D', (req, res) => res.end());
 io.on('connection', (socket) => {
   socket.data.cache = {}
   socket.on('preload', (pub) => {
-    let key = func.randomStr(32),
-      iv = Math.random().toString().slice(-16),
-      aes = rs.hextob64(rs.KJUR.crypto.Cipher.encrypt([key, iv].toString(), rs.KEYUTIL.getKey(pub))),
-      crypted = CryptoJS.AES.encrypt(JSON.stringify({ domain: data.server.domain, games: games, addons: data.addon.default }), CryptoJS.enc.Utf8.parse(key), { iv: CryptoJS.enc.Utf8.parse(iv) }).toString();
-    redis.hSet('key', socket.id, key);
-    redis.hSet('iv', socket.id, iv);
-    //redis.hSet('pub', socket.id, pub);
-    io.in(socket.id).emit('preload', `${aes}?${crypted}`);
+    if (pub) {
+      let key = func.randomStr(32),
+        iv = Math.random().toString().slice(-16),
+        aes = rs.hextob64(rs.KJUR.crypto.Cipher.encrypt([key, iv].toString(), rs.KEYUTIL.getKey(pub))),
+        crypted = CryptoJS.AES.encrypt(JSON.stringify({ domain: data.server.domain, games: games, addons: data.addon.default }), CryptoJS.enc.Utf8.parse(key), { iv: CryptoJS.enc.Utf8.parse(iv) }).toString();
+      redis.hSet('key', socket.id, key);
+      redis.hSet('iv', socket.id, iv);
+      //redis.hSet('pub', socket.id, pub);
+      io.in(socket.id).emit('preload', `${aes}?${crypted}`);
+    }
+    else {
+      io.in(socket.id).emit('preload', data.server.domain);
+    }
   });
   socket.on('?', async (req) => {
     const head = {
@@ -98,7 +103,7 @@ io.on('connection', (socket) => {
     apps[type[0]][type[1]](info.info, head, async (info, cache, room, game) => handle(socket, head, info, cache, room, game));
     console.log('receive:' + info.type);
   });
-  socket.on(':', async (info) => {
+  socket.on(':', async (req) => {
     const head = {
       ip: (socket.handshake.headers['x-forwarded-for'] != null) ? socket.handshake.headers['x-forwarded-for'] : socket.handshake.address,
       cookie: info.cookie,
@@ -107,7 +112,10 @@ io.on('connection', (socket) => {
       cache: socket.data.cache,
       room: (socket.data.room) ? [socket.sid, socket.data.room] : [socket.sid]
     }
-    console.log(info)
+    let type = req.type.split('.'),
+      info = req.info;
+    apps[type[0]][type[1]](info, head, async (info, cache, room, game) => handle(socket, head, info, cache, room, game));
+    console.log('receive:' + req.type);
   });
   socket.on('disconnect', _ => {
     const head = {
@@ -146,9 +154,12 @@ async function emit(list) {
     };
     let e = async (sid, msg) => {
       let key = await redis.hGet('key', sid);
-      let iv = await redis.hGet('iv', sid);
-      let crypted = CryptoJS.AES.encrypt(JSON.stringify(msg), CryptoJS.enc.Utf8.parse(key), { iv: CryptoJS.enc.Utf8.parse(iv) }).toString();
-      io.in(sid).emit('!', crypted);
+      if (key) {
+        let iv = await redis.hGet('iv', sid);
+        let crypted = CryptoJS.AES.encrypt(JSON.stringify(msg), CryptoJS.enc.Utf8.parse(key), { iv: CryptoJS.enc.Utf8.parse(iv) }).toString();
+        io.in(sid).emit('!', crypted);
+      }
+      else io.in(sid).emit(';', msg);
     }
     if (info.room) for (let room of info.room) {
       let mates = await io.in(room).allSockets();
