@@ -106,7 +106,7 @@ io.on('connection', (socket) => {
   socket.on(':', async (req) => {
     const head = {
       ip: (socket.handshake.headers['x-forwarded-for'] != null) ? socket.handshake.headers['x-forwarded-for'] : socket.handshake.address,
-      cookie: info.cookie,
+      cookie: req.cookie,
       sid: socket.id,
       time: new Date().getTime(),
       cache: socket.data.cache,
