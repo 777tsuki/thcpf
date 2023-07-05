@@ -159,7 +159,7 @@ async function emit(list) {
         let crypted = CryptoJS.AES.encrypt(JSON.stringify(msg), CryptoJS.enc.Utf8.parse(key), { iv: CryptoJS.enc.Utf8.parse(iv) }).toString();
         io.in(sid).emit('!', crypted);
       }
-      else io.in(sid).emit(';', msg);
+      else io.in(sid).emit(msg.type, msg.info);
     }
     if (info.room) for (let room of info.room) {
       let mates = await io.in(room).allSockets();
