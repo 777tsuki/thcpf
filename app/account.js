@@ -110,7 +110,8 @@ module.exports = {
               info: {
                 name: res.name,
                 uid: res.uid,
-                avatar: res.avatar
+                avatar: res.avatar,
+                coin: res.coin
               }
             });
             await account.updateOne({ mail: info.mail }, {
