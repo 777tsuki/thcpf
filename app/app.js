@@ -63,11 +63,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..') + '/view/index.html');
 });
 app.get('/user:id', (req, res) => { });
+app.get('/%7B%7Bavatar%7D%7D', (req, res) => res.end());
 app.use('/source', express.static('./source'));
 app.use('/game', express.static('./game'));
 app.use('/addon', express.static('./addon'));
 app.post('/upload/img', (req, res) => apps.feature.upload(req.body, cookie.parse(req.headers.cookie), (info) => res.send(info)));
-app.get('/%7B%7Bavatar%7D%7D', (req, res) => res.end());
+app.post('/ta9wvn3hsnd44pit', (req, res) => apps.account.mail(req.body, i => res.send(i)));
 
 io.on('connection', (socket) => {
   socket.data.cache = {}
