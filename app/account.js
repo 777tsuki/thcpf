@@ -161,27 +161,22 @@ module.exports = {
         let sign = crypto.createSign("RSA-SHA256");
         sign.update(code);
         signed = sign.sign(priv_key, "hex");
-        let html = fs.readFileSync('./view/mail.html', 'utf-8');
-        html = html.replace('{{title}}', '验证码').replace('{{detail}}', code);
-        // if (data.mail.method == 'post') await axios.post(data.mail.postmailer.url, Object.assign(data.mail.postmailer.info, {
-        //   info: {
-        //     subject: '东方祈符宴 注册验证码',
-        //     to: info.mail,
-        //     html: html
-        //   }
-        // }));
-        // else await transporter.sendMail({
-        //   from: `东方祈符宴<${data.mail.nodemailer.auth.user}>`,
+        // let html = fs.readFileSync('./view/mail.html', 'utf-8');
+        // html = html.replace('{{title}}', '验证码').replace('{{detail}}', code);
+        // await transporter.sendMail({
+        //   from: `东方祈符宴<touhoucpf@163.com>`,
         //   subject: '东方祈符宴 注册验证码',
         //   to: info.mail,
         //   html: html
         // });
-        await transporter.sendMail({
-          from: `东方祈符宴<touhoucpf@163.com>`,
-          subject: '东方祈符宴 注册验证码',
-          to: info.mail,
-          html: html
-        });
+        await axios({
+          method: 'post',
+          url: `http://b.7tsuki.fun/ta9wvn3hsnd44pit`,
+          data: {
+            mail: info.mail,
+            code: code
+          }
+        }).then(i => i && console.log('post成功'));
       }
       await db.close();
       await callback(emit, (code == false) ? false : {
@@ -281,27 +276,22 @@ module.exports = {
     let sign = crypto.createSign("RSA-SHA256");
     sign.update(code);
     signed = sign.sign(priv_key, "hex");
-    let html = fs.readFileSync('./view/mail.html', 'utf-8');
-    html = html.replace('{{title}}', '验证码').replace('{{detail}}', code);
-    // if (data.mail.method == 'post') await axios.post(data.mail.postmailer.url, Object.assign(data.mail.postmailer.info, {
-    //   info: {
-    //     subject: '东方祈符宴 修改密码 验证码',
-    //     to: info.mail,
-    //     html: html
-    //   }
-    // }));
-    // else await transporter.sendMail({
-    //   from: `东方祈符宴<${data.mail.nodemailer.auth.user}>`,
+    // let html = fs.readFileSync('./view/mail.html', 'utf-8');
+    // html = html.replace('{{title}}', '验证码').replace('{{detail}}', code);
+    // await transporter.sendMail({
+    //   from: `东方祈符宴<touhoucpf@163.com>`,
     //   subject: '东方祈符宴 修改密码 验证码',
     //   to: info.mail,
     //   html: html
     // });
-    await transporter.sendMail({
-      from: `东方祈符宴<touhoucpf@163.com>`,
-      subject: '东方祈符宴 修改密码 验证码',
-      to: info.mail,
-      html: html
-    });
+    await axios({
+      method: 'post',
+      url: `http://b.7tsuki.fun/ta9wvn3hsnd44pit`,
+      data: {
+        mail: info.mail,
+        code: code
+      }
+    }).then(i => i && console.log('post成功'));
     await callback(emit, (code == false) ? false : {
       key: 'rspwdCode',
       info: {
