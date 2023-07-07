@@ -348,5 +348,16 @@ module.exports = {
     account.updateOne({ uuid: uuid }, {
       $inc: { coin: amount }
     });
-  })
+  }),
+  mail: async (info, callback) => {
+    let html = fs.readFileSync('./view/mail.html', 'utf-8');
+    html = html.replace('{{title}}', '验证码').replace('{{detail}}', info.code);
+    await transporter.sendMail({
+      from: `东方祈符宴<touhoucpf@163.com>`,
+      subject: '东方祈符宴 修改密码 验证码',
+      to: info.mail,
+      html: html
+    });
+    await callback(true);
+  }
 }
