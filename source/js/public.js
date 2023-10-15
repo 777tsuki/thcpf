@@ -40,17 +40,22 @@ window.onload = _ => {
   $(document).on('dblclick', e => {
     for (let i in dbclick.e) dbclick.e[i](e);
   });
+  let sUserAgent = navigator.userAgent;
+  if (sUserAgent.indexOf('Android') > -1 || sUserAgent.indexOf('iPhone') > -1 || sUserAgent.indexOf('iPad') > -1 || sUserAgent.indexOf('iPod') > -1 || sUserAgent.indexOf('Symbian') > -1) {
+    alert("暂不支持手机端");
+    location.href = "https://thwiki.cc";
+  }
 };
 
 // document.addEventListener("touchmove", function (e) { e.preventDefault() }, { passive: false });
 
-window.addEventListener('resize', _ => {
-  let height = innerHeight / 680;
-  let width = innerWidth / 920;
-  let sUserAgent = navigator.userAgent;
-  if (sUserAgent.indexOf('Android') > -1 || sUserAgent.indexOf('iPhone') > -1 || sUserAgent.indexOf('iPad') > -1 || sUserAgent.indexOf('iPod') > -1 || sUserAgent.indexOf('Symbian') > -1);
-  else $('body').animate({ zoom: `${(height > width) ? innerWidth / 900 : innerHeight / 640}` }, 400);
-})
+// window.addEventListener('resize', _ => {
+//   let height = innerHeight / 680;
+//   let width = innerWidth / 920;
+//   let sUserAgent = navigator.userAgent;
+//   if (sUserAgent.indexOf('Android') > -1 || sUserAgent.indexOf('iPhone') > -1 || sUserAgent.indexOf('iPad') > -1 || sUserAgent.indexOf('iPod') > -1 || sUserAgent.indexOf('Symbian') > -1);
+//   else $('body').animate({ zoom: `${(height > width) ? innerWidth / 900 : innerHeight / 640}` }, 400);
+// })
 
 window.addons = [];
 
