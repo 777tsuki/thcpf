@@ -95,7 +95,8 @@
         $('#loadingDiv').remove();
         let height = innerHeight / 680;
         let width = innerWidth / 920;
-        $('body').animate({ zoom: `${(height > width) ? innerWidth / 900 : innerHeight / 640}` }, 400);
+        // $('body').animate({ zoom: `${(height > width) ? innerWidth / 900 : innerHeight / 640}` }, 400);
+        $('body').animate({ zoom: 1 }, 400);
         $('.snowtap').fadeIn(100);
         $('.option').fadeIn(100);
       });
